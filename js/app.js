@@ -8,7 +8,6 @@ class Carousel{
         this.imgWidth = this.imgs.width();
         this.imgCount = this.imgs.length;
         this.index = 0;
-        this.isAnimate = false;
         this.init();
     }
     init(){
@@ -20,63 +19,47 @@ class Carousel{
     }
     bind(){
         this.preBtn.on("click",  () =>{
-            if(!this.isAnimate){
-                this.playPre(1);
-            }
-            
+            this.playPre();
         })
         this.nextBtn.on("click", ()=>{
-            if(!this.isAnimate){
-                this.playNext(1);
-            }
+            this.playNext();
         })
         this.bullets.on("click",(e) =>{
-            if(!this.isAnimate){
-                if($(e.target).index() > this.index){
-                    this.playNext($(e.target).index() - this.index);
-              }else{
-                  this.playPre(this.index - $(e.target).index());
-              }
-            }
-           
+            this.clockBull($(e.target));
         })
     }
     playNext(len){
-        this.isAnimate = true;
         this.imgCt.animate({
-            left:"-="+this.imgWidth*len
-        },400, () =>{
-            this.index += len;
+            left:"-="+this.imgWidth
+        },() =>{
+            this.index++;
             
-            if(this.index === this.imgCount){
+            if(this.index=== this.imgCount){
                 this.imgCt.css("left",-this.imgWidth);
                 this.index = 0;
             }
-            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active");
-            this.isAnimate = false;
+            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active")
         });
         
     }
     playPre(len){
-        this.isAnimate = true;
         this.imgCt.animate({
-            left:"+="+this.imgWidth*len
-        },400, () =>{
-            this.index -= len;
+            left:"+="+this.imgWidth
+        }, () =>{
+            this.index--;
             
             if(this.index === -1){
                 this.imgCt.css("left",-(this.imgWidth)*this.imgCount);
                 this.index = this.imgCount-1;
             }
-            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active");
-            this.isAnimate = false;
+            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active")
         });
     }
     clockBull($bull){
        this.index = $bull.index();
        this.imgCt.animate({
            left:'-'+(this.index+1)*this.imgWidth
-       },400)
+       })
        this.bullets.eq(this.index).addClass("active").siblings().removeClass("active")
     }
     
@@ -84,4 +67,3 @@ class Carousel{
 
 
 
-// let p = new Carousel($(".carousel"))
