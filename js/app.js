@@ -8,6 +8,7 @@ class Carousel{
         this.imgWidth = this.imgs.width();
         this.imgCount = this.imgs.length;
         this.index = 0;
+        this.isAnimate = false;
         this.init();
     }
     init(){
@@ -19,16 +20,26 @@ class Carousel{
     }
     bind(){
         this.preBtn.on("click",  () =>{
-            this.playPre();
+            if(!this.isAnimate){
+                this.playPre();
+            }
+            
         })
         this.nextBtn.on("click", ()=>{
-            this.playNext();
+            if(!this.isAnimate){
+                this.playNext();
+            }
+            
         })
         this.bullets.on("click",(e) =>{
-            this.clockBull($(e.target));
+            if(!this.isAnimate){
+                this.clockBull($(e.target));
+            }
+            
         })
     }
     playNext(len){
+        this.isAnimate = true;
         this.imgCt.animate({
             left:"-="+this.imgWidth
         },() =>{
@@ -38,11 +49,13 @@ class Carousel{
                 this.imgCt.css("left",-this.imgWidth);
                 this.index = 0;
             }
-            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active")
+            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active");
+            this.isAnimate = false;
         });
         
     }
     playPre(len){
+        this.isAnimate = true;
         this.imgCt.animate({
             left:"+="+this.imgWidth
         }, () =>{
@@ -52,13 +65,17 @@ class Carousel{
                 this.imgCt.css("left",-(this.imgWidth)*this.imgCount);
                 this.index = this.imgCount-1;
             }
-            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active")
+            this.bullets.eq(this.index).addClass("active").siblings().removeClass("active");
+            this.isAnimate = false;
         });
     }
     clockBull($bull){
+        this.isAnimate = true;
        this.index = $bull.index();
        this.imgCt.animate({
            left:'-'+(this.index+1)*this.imgWidth
+       },() =>{
+           this.isAnimate = false;
        })
        this.bullets.eq(this.index).addClass("active").siblings().removeClass("active")
     }
