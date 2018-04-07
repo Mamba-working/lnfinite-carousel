@@ -1,5 +1,5 @@
 ## 无限轮播
-
+[演示地址](https://mamba-working.github.io/lnfinite-carousel/Carousel.html)
 ### 依赖于jquery，必须先行导入jquery
 
 复制粘贴下列html(图片链接可以自己修改)
